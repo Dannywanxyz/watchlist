@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="icon" href="{{url_for('static', filename='favicon1.ico')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 	<meta charset="utf-8">
 	<title>{{name}}'s watchlist</title>
 </head>
 <body>
-	<h2>{{name}}'s watchlist</h2>
+	
+	<h2 style="text-align: center;font-size: 27px"><img alt="avatar" class="avatar" src="{{url_for('static', filename='favicon.ico')}}"> {{name}}'s watchlist</h2>
+	<!-- <img src="{{url_for('static', filename='favicon.ico')}}"> -->
 	<p>{{movies|length}} Titles</p>
-	<ul>
+	<ul class="movie-list">
 		{%for movie in movies%}
 		<li>{{movie.title}} - {{movie.year}}</li>
 		{%endfor%}
 	</ul>
+	<img alt="totoro" class="totoro" src="http://helloflask.com/totoro.gif">
+	<!-- <img src="{{url_for('static', filename='images/totoro.gif')}}"> -->
 	<footer>
 		<small>&copy; 2020 <a href="http://helloflask.com/tutorial">Hello Flask</a></small>
 	</footer>
