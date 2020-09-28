@@ -17,6 +17,10 @@ footer {
 /* 头像 */
 .avatar {
     width: 40px;
+    position: absolute;
+    z-index: 999;
+    /*top: -2px;*/
+    left: 72px
 }
 
 /* 电影列表 */
