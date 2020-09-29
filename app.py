@@ -95,3 +95,13 @@ def forge():
 
     db.session.commit()
     click.echo('Done!')
+
+@app.errorhandler(404)
+def page_not_found(e):
+	user = User.query.first()
+	return render_template('404.html', user=user), 404 
+
+@app.context_processor
+def inject_user():
+	user = User.query.first()
+	return dict(user=user)
