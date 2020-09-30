@@ -38,15 +38,7 @@ def initdb(drop):
     db.create_all()
     click.echo('Initialize Database.')
 
-
-@app.route('/')
-def index():
-    user = User.query.first()
-    movies = Movie.query.all()
-    return render_template('index.html', user=user, movies=movies)
-
-
-@app.route('/index')
+# @app.route('/index')
 @app.route('/home')
 def hello():
     return '<h1>Hello Totoro!</h1><img src="http://helloflask.com/totoro.gif">'
@@ -69,32 +61,32 @@ def test_url_for():
     return "Test Page"
 
 
-@app.cli.command()
-def forge():
-    """生成假数据"""
-    db.create_all()
-    name = 'Nathon Drake'
-    movies = [
-        # {'title':'Forist Gump', 'year':'1991'}
-        {'title': 'Iron Man', 'year': '2008'},
-        {'title': 'Incredible Hulk', 'year': '2008'},
-        {'title': 'Captain America', 'year': '2008'},
-        {'title': 'Thor', 'year': '2010'},
-        {'title': 'Avengers', 'year': '2012'},
-        {'title': 'Captain America:Cival War', 'year': '2015'},
-        {'title': 'Blank Panther', 'year': '2017'},
-        {'title': 'Avengers:Infinity War', 'year': '2018'},
-        {'title': 'Captain Marvel', 'year': '2019'},
-        {'title': 'Avengers:End Game', 'year': '2019'}
-    ]
-    user = User(name=name)
-    db.session.add(user)
-    for m in movies:
-        movie = Movie(title=m['title'], year=m['year'])
-        db.session.add(movie)
+# @app.cli.command()
+# def forge():
+#     """生成假数据"""
+#     db.create_all()
+#     name = 'Nathon Drake'
+#     movies = [
+#         # {'title':'Forist Gump', 'year':'1991'}
+#         {'title': 'Iron Man', 'year': '2008'},
+#         {'title': 'Incredible Hulk', 'year': '2008'},
+#         {'title': 'Captain America', 'year': '2008'},
+#         {'title': 'Thor', 'year': '2010'},
+#         {'title': 'Avengers', 'year': '2012'},
+#         {'title': 'Captain America:Cival War', 'year': '2015'},
+#         {'title': 'Blank Panther', 'year': '2017'},
+#         {'title': 'Avengers:Infinity War', 'year': '2018'},
+#         {'title': 'Captain Marvel', 'year': '2019'},
+#         {'title': 'Avengers:End Game', 'year': '2019'}
+#     ]
+#     user = User(name=name)
+#     db.session.add(user)
+#     for m in movies:
+#         movie = Movie(title=m['title'], year=m['year'])
+#         db.session.add(movie)
 
-    db.session.commit()
-    click.echo('Done!')
+#     db.session.commit()
+#     click.echo('Done!')
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -105,3 +97,11 @@ def page_not_found(e):
 def inject_user():
 	user = User.query.first()
 	return dict(user=user)
+
+@app.route('/')
+def index():
+    # user = User.query.first()
+    movies = Movie.query.all()
+    # print(inject_user())
+    # return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
