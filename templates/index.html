@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<link rel="icon" href="{{url_for('static', filename='favicon1.ico')}}">
-	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-	<meta charset="utf-8">
-	<title>{{user.name}}'s watchlist</title>
-</head>
-<body>
-	
-	<h2 style="text-align: center;font-size: 32px;position: relative;z-index: 99;font-family: fantasy;"><img alt="avatar" class="avatar" src="{{url_for('static', filename='favicon.ico')}}"> {{user.name}}'s watchlist</h2>
-	<!-- <img src="{{url_for('static', filename='favicon.ico')}}"> -->
-	<p>{{movies|length}} Titles</p>
-	<ul class="movie-list">
+{% extends 'base.html' %}
+{% block content %}
+<p>{{ movies|length }} Titles</p>
+<ul class="movie-list">
 		{%for movie in movies%}
-		<li>{{movie.title}} - {{movie.year}}</li>
+		<li>{{movie.title}} - {{movie.year}}
+			<span class="float-right">
+			<a class="douban" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_b" title="Find this movie on Douban">豆瓣电影</a>
+		</span>
+		</li>
+		
 		{%endfor%}
 	</ul>
-	<img alt="totoro" class="totoro" src="http://helloflask.com/totoro.gif">
-	<!-- <img src="{{url_for('static', filename='images/totoro.gif')}}"> -->
-	<footer>
-		<small>&copy; 2020 <a href="http://helloflask.com/tutorial">Hello Flask</a></small>
-	</footer>
-</body>
-</html>
+<img alt="totoro" class="totoro" src="http://helloflask.com/totoro.gif">
+{% endblock %}
