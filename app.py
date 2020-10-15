@@ -1,5 +1,5 @@
 import click
-from flask import escape, url_for
+from flask import escape, url_for, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template
 import os
@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = prefix + \
     os.path.join(app.root_path, 'data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'dev'
 db = SQLAlchemy(app)
 
 
@@ -98,8 +99,20 @@ def inject_user():
 	user = User.query.first()
 	return dict(user=user)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        year = request.form.get('year')
+        if not title or not year or len(year) > 4 or len(title) > 60:
+            flash('Invalid input')
+            return redirect(url_for('index'))
+        movie = Movie(title=title, year=year)
+        db.session.add(movie)
+        db.session.commit()
+        flash('Item Created')
+        return redirect(url_for('index'))
+
     # user = User.query.first()
     movies = Movie.query.all()
     # print(inject_user())
