@@ -1,9 +1,11 @@
-import click
-from flask import escape, url_for, redirect, request, flash
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template
 import os
 import sys
+
+import click
+from flask import (Flask, escape, flash, redirect, render_template, request,
+                   url_for)
+from flask_sqlalchemy import SQLAlchemy
+
 WIN = sys.platform.startswith('win')
 if WIN:
     prefix = 'sqlite:///'
@@ -15,7 +17,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = prefix + \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'dev'
 db = SQLAlchemy(app)
-
 
 
 class User(db.Model):
@@ -39,7 +40,10 @@ def initdb(drop):
     db.create_all()
     click.echo('Initialize Database.')
 
+
 # @app.route('/index')
+
+
 @app.route('/home')
 def hello():
     return '<h1>Hello Totoro!</h1><img src="http://helloflask.com/totoro.gif">'
@@ -55,6 +59,7 @@ def test_url_for():
     # 下面是调用试例
     print(url_for('hello'))
     print(url_for('user_page', name="criss"))
+    # print()
     print(url_for('user_page', name="alice"))
     print(url_for('user_page', name="bob"))
     print(url_for('test_url_for'))
@@ -89,18 +94,22 @@ def test_url_for():
 #     db.session.commit()
 #     click.echo('Done!')
 
+
 @app.errorhandler(404)
 def page_not_found(e):
-	user = User.query.first()
-	return render_template('404.html', user=user), 404 
+    user = User.query.first()
+    return render_template('404.html', user=user), 404
+
 
 @app.context_processor
 def inject_user():
-	user = User.query.first()
-	return dict(user=user)
+    user = User.query.first()
+    return dict(user=user)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    movies = Movie.query.all()
     if request.method == 'POST':
         title = request.form.get('title')
         year = request.form.get('year')
@@ -114,7 +123,33 @@ def index():
         return redirect(url_for('index'))
 
     # user = User.query.first()
-    movies = Movie.query.all()
     # print(inject_user())
     # return render_template('index.html', user=user, movies=movies)
     return render_template('index.html', movies=movies)
+
+
+@app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
+def edit(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+    if request.method == "POST":
+        title = request.form['title']
+        year = request.form['year']
+        if not title or not year or len(year) > 4 or len(title) > 60:
+            flash('Invalid input')
+            return redirect(url_for('index'))
+        movie.title = title
+        movie.year = year
+        # db.session.add(movie)
+        db.session.commit()
+        flash('Item Updated')
+        return redirect(url_for('index'))
+    return render_template('edit.html', movie=movie)
+
+
+@app.route('/movie/delete/<int:movie_id>', methods=['POST'])
+def delete(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+    db.session.delete(movie)
+    db.session.commit()
+    flash('Item deleted')
+    return redirect(url_for('index'))
