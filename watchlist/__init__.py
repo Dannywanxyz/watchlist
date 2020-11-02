@@ -4,6 +4,7 @@ import sys
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
 
 
 # from watchlist.models import User
@@ -14,10 +15,12 @@ if WIN:
 else:
     prefix = 'sqlite:////'
 app = Flask(__name__)
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+admin = Admin(app, name="FlaskAdmin", template_mode="bootstrap3")
 app.config['SQLALCHEMY_DATABASE_URI'] = prefix + \
-    os.path.join(app.root_path, 'data.db')
+    os.path.join(app.root_path, os.getenv('DATABASE_FILE', 'data.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'dev'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -37,4 +40,4 @@ def inject_user():
     return dict(user=user)
 
 
-from watchlist import views, errors, commands  # noqa: E402, F401
+from watchlist import views, errors, commands, admin_view  # noqa: E402, F401

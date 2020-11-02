@@ -10,7 +10,7 @@
 {% endif %}
 <ul class="movie-list">
 		{%for movie in movies%}
-		<li>{{movie.title}} - {{movie.year}}
+		<li><a href="{{url_for('detail', movie_id=movie.id)}}">{{movie.title}} - {{movie.year}}</a>
 		<span class="float-right">
 			<a class="douban" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_b" title="Find this movie on Douban">豆瓣电影</a>
 		</span>

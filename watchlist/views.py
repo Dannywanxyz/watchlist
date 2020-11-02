@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from watchlist import app, db
-from watchlist.models import Movie, User
+from watchlist.models import Movie, User, Article
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,6 +25,21 @@ def index():
     # print(inject_user())
     # return render_template('index.html', user=user, movies=movies)
     return render_template('index.html', movies=movies)
+
+
+@app.route('/movie/detail/<int:movie_id>', methods=['GET'])
+# @login_required
+def detail(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+    if movie is None:
+        flash('电影记录不存在！')
+        return redirect(url_for('index'))
+    movie_article = Article.query.get_or_404(movie_id)
+    if movie_article is None:
+        flash('没有此电影的文章。')
+        return redirect(url_for('index'))
+
+    return render_template('detail.html', movie_article=movie_article)
 
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])

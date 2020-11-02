@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from watchlist import db
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 
 class User(db.Model, UserMixin):
@@ -22,3 +23,14 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))
     year = db.Column(db.String(4))
+
+
+class Article(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(32))
+    content = db.Column(db.Text, nullable=False)
+    tag = db.Column(db.String(64), nullable=True)
+    create_time = db.Column(db.DateTime, nullable=True, default=datetime.now)
+
+    def __repr__(self):
+        return '<User %r>' % self.title
