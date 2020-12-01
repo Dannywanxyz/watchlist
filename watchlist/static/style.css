@@ -77,6 +77,11 @@ nav li a:hover {
     text-decoration: none;
     color: white;
 }
+
+.movie-list li a:hover {
+    text-decoration: none;
+}
+
 .float-right {
     float: right;
 }

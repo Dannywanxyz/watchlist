@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<p style="margin: 5px">{{ movies|length }} Titles</p>
+{% if not current_user.is_authenticated %}
+<p style="margin: 10px">{{ movies|length }} Titles</p>
+{% endif %}
 {% if current_user.is_authenticated %}
-<form method="POST">
+<form method="POST" style="margin-top: 7px; margin-bottom: 6px">
 	Name <input type="text" name="title" autocomplete="off" required>
 	Year <input type="text" name="year" autocomplete="off" required>
 	<input class="btn" type="submit" name="submit" value="add">
