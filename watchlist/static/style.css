@@ -17,12 +17,12 @@ footer {
 
 /* 头像 */
 .avatar {
-    width: 40px;
+    /*width: 40px;*/
     /*position: absolute;*/
     /*z-index: 999;*/
-    margin-bottom: -8px;
+    margin-bottom: 3px;
     /*top: -2px;*/
-    left: 72px
+    /*left: 72px*/
 }
 
 /* 电影列表 */
@@ -68,12 +68,14 @@ nav li a {
     display: block;
     color: white;
     text-align: center;
-    padding: 8px 12px;
+    padding: 10px 12px;
     text-decoration: none;
 }
 
 nav li a:hover {
     background-color: #111;
+    text-decoration: none;
+    color: white;
 }
 .float-right {
     float: right;
@@ -88,6 +90,15 @@ nav li a:hover {
     border-radius: 5px;
     padding: 3px 5px;
 }
+.douban:hover {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    background: #1b5f88;
+    border-radius: 5px;
+    padding: 3px 5px;   
+}
 /* 覆盖某些浏览器对 input 元素定义的字体 */
 input[type=submit] {
     font-family: inherit;
@@ -101,7 +112,7 @@ input[name=year] {
     width: 50px;
 }
 
-.btn {
+.mybtn {
     font-size: 12px;
     padding: 3px 5px;
     text-decoration: none;
@@ -111,8 +122,13 @@ input[name=year] {
     border: 1px solid #555555;
     border-radius: 5px;
 }
+.act{
+    margin-right: 5px;
+    padding: 2px 4px;
+    line-height: initial;
+}
 
-.btn:hover {
+.mybtn:hover {
     text-decoration: none;
     background-color: black;
     color: white;
@@ -130,4 +146,12 @@ input[name=year] {
 }
 .inline-form {
     display: inline;
+}
+#headline {
+    text-align: center;font-size: 32px;position: relative;z-index: 99;font-family: fantasy;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.errors {
+    font-color: red;
 }

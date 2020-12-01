@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>{{ movies|length }} Titles</p>
+<p style="margin: 5px">{{ movies|length }} Titles</p>
 {% if current_user.is_authenticated %}
 <form method="POST">
 	Name <input type="text" name="title" autocomplete="off" required>
@@ -10,18 +10,18 @@
 {% endif %}
 <ul class="movie-list">
 		{%for movie in movies%}
-		<li><a href="{{url_for('detail', movie_id=movie.id)}}">{{movie.title}} - {{movie.year}}</a>
+		<li><a class="movie_title" href="{{url_for('detail', movie_id=movie.id)}}">{{movie.title}} - {{movie.year}}</a>
 		<span class="float-right">
 			<a class="douban" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_b" title="Find this movie on Douban">豆瓣电影</a>
 		</span>
 		{% if current_user.is_authenticated %}
 		<span class="float-right">
 			<form class="inline-form" method="post" action="{{ url_for('delete', movie_id=movie.id) }}">
-				<input type="submit" name="delete" class="btn" value="Delete" onclick="return confirm('确定删除此记录吗？')">
+				<input type="submit" name="delete" class="mybtn act" value="Delete" onclick="return confirm('确定删除此记录吗？')">
 			</form>
 		</span>		
 		<span class="float-right">
-			<a class="btn" href="{{ url_for('edit', movie_id=movie.id ) }}">Edit</a>
+			<a class="mybtn act" href="{{ url_for('edit', movie_id=movie.id ) }}">Edit</a>
 		</span>
 		{% endif %}
 		</li>

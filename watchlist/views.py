@@ -2,6 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from watchlist import app, db
 from watchlist.models import Movie, User, Article
+from watchlist.forms import LoginForm
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -30,12 +31,13 @@ def index():
 @app.route('/movie/detail/<int:movie_id>', methods=['GET'])
 # @login_required
 def detail(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
-    if movie is None:
+    movie = Movie.query.get(movie_id)
+    if not movie:
         flash('电影记录不存在！')
         return redirect(url_for('index'))
-    movie_article = Article.query.get_or_404(movie_id)
-    if movie_article is None:
+    print(movie_id)
+    movie_article = Article.query.get(movie_id)
+    if not movie_article:
         flash('没有此电影的文章。')
         return redirect(url_for('index'))
 
@@ -73,10 +75,10 @@ def delete(movie_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.form['username']
-        # print(username)
-        password = request.form['password']
+        username = form.username.data
+        password = form.password.data
         # print(password)
         if not username or not password:
             flash('Invalid input!')
@@ -91,7 +93,7 @@ def login():
         flash('Invalid username or password')
         return redirect(url_for('login'))
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
 @app.route('/logout')
