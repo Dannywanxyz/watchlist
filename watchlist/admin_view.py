@@ -8,7 +8,7 @@ class UserView(ModelView):
     can_create = False
     can_edit = False
     can_delete = False
-    column_exclude_list = ['password_hash', ]
+    column_exclude_list = ['password_hash']
     column_editable_list = ['username']
 
 
